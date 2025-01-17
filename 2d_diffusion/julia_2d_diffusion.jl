@@ -1,4 +1,5 @@
 using Plots
+using BenchmarkTools
 
 struct velocity_field
     u::Array{Float64, 2}
@@ -37,16 +38,17 @@ end
 function main()
     v = velocity_field(zeros(100, 100), zeros(100, 100))
     initiate_velocity_field!(v)
-    initial_condition = heatmap(v.u)
-    savefig(initial_condition, "initial_condition.png")
-    new_v = time_step(v, 0.01)    
-
-    for t in 1:100
+    #initial_condition = heatmap(v.u)
+    #savefig(initial_condition, "img/initial_condition.png")
+    new_v = v
+    for t in 1:1000
         new_v = time_step(new_v, 0.1)
     end
-    final_condition = heatmap(new_v.u)
-    savefig(final_condition, "final_condition.png")
+    #final_condition = heatmap(new_v.u)
+    #savefig(final_condition, "img/final_condition.png")
 
 end
 
-main()
+@btime begin
+    main()
+end
